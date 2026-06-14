@@ -9,19 +9,22 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // API calling logic to list rooms [cite: 19]
-    axios.get('http://localhost:5000/api/rooms')
+    // Direct Live Cloud Backend Call (Removed all localhost instances)
+    axios.get('https://meeting-room-mern.onrender.com/api/rooms')
       .then(res => {
         setRooms(res.data);
         setLoading(false);
       })
       .catch(err => {
-        axios.get('http://127.0.0.1:5000/api/rooms')
+        console.error("Primary fetch error, retrying cloud endpoint...", err);
+        // Secure retry strategy hitting the live server again
+        axios.get('https://meeting-room-mern.onrender.com/api/rooms')
           .then(res => {
             setRooms(res.data);
             setLoading(false);
           })
           .catch(fallbackErr => {
+            console.error("Final network stack failure:", fallbackErr);
             setLoading(false);
           });
       });

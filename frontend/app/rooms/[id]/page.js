@@ -21,21 +21,11 @@ export default function RoomAvailability() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Bulletproof dual-routing connector framework
-      let res;
-      try {
-        res = await axios.get(`http://127.0.0.1:5000/api/rooms/${id}/availability?date=${date}`);
-      } catch (err) {
-        res = await axios.get(`http://localhost:5000/api/rooms/${id}/availability?date=${date}`);
-      }
+      // Clean Production Live URL Integration
+      const res = await axios.get(`https://meeting-room-mern.onrender.com/api/rooms/${id}/availability?date=${date}`);
       setSlots(res.data.slots || []);
 
-      let roomsRes;
-      try {
-        roomsRes = await axios.get('http://127.0.0.1:5000/api/rooms');
-      } catch (err) {
-        roomsRes = await axios.get('http://localhost:5000/api/rooms');
-      }
+      const roomsRes = await axios.get('https://meeting-room-mern.onrender.com/api/rooms');
       if (roomsRes && roomsRes.data) {
         setAllRooms(roomsRes.data.filter(r => r._id !== id));
       }
@@ -70,12 +60,8 @@ export default function RoomAvailability() {
     try {
       const payload = { room: id, date, slots: selectedSlots, bookedBy: { name, email }, title };
       
-      // Strict transaction validation layer
-      try {
-        await axios.post('http://127.0.0.1:5000/api/bookings', payload);
-      } catch (err) {
-        await axios.post('http://localhost:5000/api/bookings', payload);
-      }
+      // Post requests directly hitting live Render cloud backend
+      await axios.post('https://meeting-room-mern.onrender.com/api/bookings', payload);
 
       setMessage({ type: 'success', text: 'Booking successful! Grid updated live. 🎉' });
       setSelectedSlots([]);

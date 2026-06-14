@@ -17,9 +17,8 @@ export default function BookingsDashboard() {
     setMessage({ type: '', text: '' });
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/bookings?email=${email}`).catch(() =>
-        axios.get(`http://127.0.0.1:5000/api/bookings?email=${email}`)
-      );
+      // Hit directly to live production Render link
+      const res = await axios.get(`https://meeting-room-mern.onrender.com/api/bookings?email=${email}`);
       
       // Grouping consecutive slots by bookingGroupId for clean UI
       const grouped = {};
@@ -36,8 +35,23 @@ export default function BookingsDashboard() {
 
       setBookings(Object.values(grouped));
     } catch (err) {
-      console.error(err);
-      setMessage({ type: 'error', text: 'Bookings fetch karne me dikkat aayi.' });
+      console.error("Dashboard Fetch Error, retrying live endpoint...", err);
+      try {
+        // Safe backup retry to clean production link
+        const retryRes = await axios.get(`https://meeting-room-mern.onrender.com/api/bookings?email=${email}`);
+        const groupedRetry = {};
+        retryRes.data.forEach(b => {
+          if (!groupedRetry[b.bookingGroupId]) {
+            groupedRetry[b.bookingGroupId] = { ...b, slots: [b.slot] };
+          } else {
+            groupedRetry[b.bookingGroupId].slots.push(b.slot);
+          }
+        });
+        setBookings(Object.values(groupedRetry));
+      } catch (retryErr) {
+        console.error("Final pipeline failure:", retryErr);
+        setMessage({ type: 'error', text: 'Bookings fetch karne me dikkat aayi.' });
+      }
     } finally {
       setLoading(false);
     }
@@ -49,9 +63,8 @@ export default function BookingsDashboard() {
     if (!confirmCancel) return;
 
     try {
-      const res = await axios.patch(`http://localhost:5000/api/bookings/${groupId}/cancel`).catch(() =>
-        axios.patch(`http://127.0.0.1:5000/api/bookings/${groupId}/cancel`)
-      );
+      // Patched directly using live production architecture URL
+      const res = await axios.patch(`https://meeting-room-mern.onrender.com/api/bookings/${groupId}/cancel`);
 
       setMessage({ 
         type: 'success', 
