@@ -27,8 +27,8 @@ app.get('/', (req, res) => {
 // Database Connection Setup
 const PORT = process.env.PORT || 5000;
 
-// 🔥 Bhai maine isme tumhara username (himanshu) aur password (My_Secret123) direct cluster string ke sath set kar diya hai
-const MONGO_URI = 'mongodb+srv://himanshu:My_Secret123@cluster0.b7ipzgo.mongodb.net/roomit?retryWrites=true&w=majority';
+// ✅ Bhai isme tumhara updated username (himanshu_123) aur password (chotu) set ho gaya hai
+const MONGO_URI = 'mongodb+srv://himanshu_123:chotu@cluster0.b7ipzgo.mongodb.net/roomit?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI)
   .then(() => {
