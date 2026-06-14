@@ -21,16 +21,18 @@ app.use('/api', bookingRoutes); // Isse banega: /api/bookings
 
 // Test Route
 app.get('/', (req, res) => {
-  res.send('RoomIt Backend Server is Running!');
+  res.send('RoomIt Backend Server is Running Successfully! 🚀');
 });
 
-// Database Connection
+// Database Connection Setup
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/roomit';
+
+// ⚠️ DHAYAN RAKHO: Niche single quotes ('') ke andar jo string hai, use apni asli MongoDB Atlas cloud string se badal lena (jisme tumhara asli password ho)
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://himanshu:YOUR_ACTUAL_PASSWORD_HERE@cluster0.xxxx.mongodb.net/roomit?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI)
   .then(() => {
-    console.log('MongoDB Connected Successfully!');
+    console.log('MongoDB Connected Successfully! 🎉');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch(err => console.log('Database Connection Error: ', err));
