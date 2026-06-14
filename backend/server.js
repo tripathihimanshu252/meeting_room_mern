@@ -27,8 +27,8 @@ app.get('/', (req, res) => {
 // Database Connection Setup
 const PORT = process.env.PORT || 5000;
 
-// ⚠️ DHAYAN RAKHO: Niche single quotes ('') ke andar jo string hai, use apni asli MongoDB Atlas cloud string se badal lena (jisme tumhara asli password ho)
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://himanshu:YOUR_ACTUAL_PASSWORD_HERE@cluster0.xxxx.mongodb.net/roomit?retryWrites=true&w=majority';
+// 🔥 Bhai maine isme tumhara username (himanshu) aur password (My_Secret123) direct cluster string ke sath set kar diya hai
+const MONGO_URI = 'mongodb+srv://himanshu:My_Secret123@cluster0.b7ipzgo.mongodb.net/roomit?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI)
   .then(() => {
